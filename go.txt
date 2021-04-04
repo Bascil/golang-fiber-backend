@@ -1,0 +1,6 @@
+export GOPATH=$HOME/projects/go-demos
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+nano .bashrc
+
+source .bashrc
