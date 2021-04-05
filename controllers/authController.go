@@ -3,9 +3,8 @@ package controllers
 import (
 	"../database"
 	"../models"
+	"../util"
 	"github.com/gofiber/fiber"
-	"golang.org/x/crypto/bcrypt"
-	"github.com/dgrijalva/jwt-go"
 	"strconv"
 	"time"
 )
@@ -26,14 +25,16 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	password,_ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+	// password,_ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
 
 	user := models.User{
 		Firstname:data["first_name"],
 		Lastname:data["last_name"],
 		Email:data["email"],
-		Password:password,
+		// Password:password,
 	}
+
+	user.SetPassword(data["password"])
 
 	database.DB.Create(&user); // create user by reference
 
@@ -59,19 +60,14 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(data["password"])); err != nil {
+	if err := user.ComparePassword(data["password"]); err != nil {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "Incorrect Password",
 		})
 	}
 
-	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		Issuer: strconv.Itoa(int(user.Id)), //convert integer to string
-	    ExpiresAt: time.Now().Add(time.Hour*24).Unix(), // Convert 24 hours to unit time
-	})
-
-	token, err := claims.SignedString([]byte("secret"))
+    token, err := util.GenerateJwt(strconv.Itoa(int(user.Id)))
 
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
@@ -92,29 +88,12 @@ func Login(c *fiber.Ctx) error {
 	})
 }
 
-type Claims struct {
-	jwt.StandardClaims // Get all fields on standard claim
-}
-
 func User(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
-
-	token, err := jwt.ParseWithClaims(cookie, &Claims{}, func(token *jwt.Token) (interface{}, error){
-		return []byte("secret"), nil
-	})
-
-	if err != nil || !token.Valid {
-		c.Status(fiber.StatusUnauthorized)
-		return c.JSON(fiber.Map{
-			"message": "Unauthenticated",
-		})
-	}
-
-	claims := token.Claims.(*Claims) //cast as claims
+	id, _ := util.ParseJwt(cookie)
 
 	var user models.User
-
-	database.DB.Where("id = ?", claims.Issuer).First(&user)
+	database.DB.Where("id = ?", id).First(&user)
 	
 	return c.JSON(user)
 }

@@ -4,3 +4,10 @@ export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 nano .bashrc
 
 source .bashrc
+
+go get github.com/oxequa/realize
+
+type Claims struct {
+	jwt.StandardClaims // Get all fields on standard claim
+}
+
