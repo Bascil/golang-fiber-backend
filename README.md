@@ -2,11 +2,9 @@
 
 A Go (golang) backend application developed on Fiber Framework with React Frontend
 
-From the original Library:
+> This project is intended for developers who wish to expand their skills in using go to develop enterprise applications. This application uses MySQL database
 
-> This is intended for developers who wish to expand their skills in using go to develop enterprise applications. This application uses MySQL database
-
-It can be used as a fully functional ERP
+It can be used as a fully functional ERP with a working authentication system as well as user management with roles and permission
 
 ## Installation
 
