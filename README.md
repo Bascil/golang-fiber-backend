@@ -16,7 +16,7 @@ Run the following command as a user with sudo privileges to download and extract
 wget -c https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
 ```
 
-Setup environment variables on your .bashrc as follows:
+Setup environment variables on your .bashrc or .bash_profile as follows:
 
 ```shell
 export GOPATH=$HOME/path/to/your/project
@@ -74,7 +74,7 @@ go get github.com/dgrijalva/jwt-go
 We will use realize as a dev dependency to watch file changes.
 
 ```shell
-go get go get github.com/oxequa/realize
+go get github.com/oxequa/realize
 
 ```
 ### Update realize.yml file
