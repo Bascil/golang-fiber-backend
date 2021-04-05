@@ -32,7 +32,7 @@ DB_USER=
 DB_PASS=
 ```
 
-Then in your Go app you can do something like
+Then in your Go application you can do something like
 
 ```go
 package main
