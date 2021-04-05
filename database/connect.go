@@ -4,12 +4,16 @@ import (
 	"../models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"os"
 )
 
 var DB *gorm.DB
 
 func Connect() {
-	dsn := "wireman:st0nem@ster@tcp(127.0.0.1:3306)/go_demo?charset=utf8mb4&parseTime=True&loc=Local"
+	dbName := os.Getenv("DB_NAME")
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dsn := dbUser + ":" + dbPass+"@tcp(127.0.0.1:3306)/"+dbName+"?charset=utf8mb4&parseTime=True&loc=Local"
 	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
