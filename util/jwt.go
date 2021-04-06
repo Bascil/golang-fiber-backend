@@ -3,9 +3,8 @@ package util
 import (
 	"github.com/dgrijalva/jwt-go"
 	"time"
+	"os"
 )
-
-const SecretKey = "secret"
 
 func GenerateJwt(issuer string) (string, error) {
 
@@ -14,12 +13,12 @@ func GenerateJwt(issuer string) (string, error) {
 	    ExpiresAt: time.Now().Add(time.Hour*24).Unix(), // Convert 24 hours to unit time
 	})
 
-	return claims.SignedString([]byte(SecretKey))
+	return claims.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
 func ParseJwt(cookie string)(string,error) {
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error){
-		return []byte(SecretKey), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
 	if err != nil || !token.Valid {

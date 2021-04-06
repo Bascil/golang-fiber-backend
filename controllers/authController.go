@@ -111,6 +111,54 @@ func Logout(c *fiber.Ctx) error {
 		"message": "Success",
 	})
 
+}
 
+func UpdateInfo(c *fiber.Ctx) error {
+	var data map[string]string 
+
+	err := c.BodyParser(&data)
+
+	if err != nil {
+		return err
+	}
+
+	id, _ := strconv.Atoi(c.Params("id")) 
+	user := models.User{
+		Id: uint(id),
+		Firstname:data["first_name"],
+		Lastname:data["last_name"],
+		Email:data["email"],
+	}
+
+	database.DB.Model(&user).Updates(user)
+
+	return c.JSON(user)
+}
+
+func UpdatePassword(c *fiber.Ctx) error {
+	var data map[string]string 
+
+	err := c.BodyParser(&data)
+
+	if err != nil {
+		return err
+	}
+
+	if data["password"] != data["password_confirm"] {
+		c.Status(400)
+		return c.JSON(fiber.Map{
+			"message":"passwords do not match",
+		})
+	}
+
+	id, _ := strconv.Atoi(c.Params("id")) 
+	user := models.User{
+		Id: uint(id),
+	}
+	user.SetPassword(data["password"])
+
+	database.DB.Model(&user).Updates(user)
+
+	return c.JSON(user)
 }
 

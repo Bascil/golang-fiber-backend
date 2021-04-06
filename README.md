@@ -22,12 +22,13 @@ export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 ```
 ## Environment Setup
 
-Add your application configuration to your `.env` file in the root of your project:
+Add your environment variables to your `.env` file in the root of your project:
 
 ```shell
 DB_NAME=
 DB_USER=
 DB_PASS=
+JWT_SECRET=
 ```
 
 Then in your Go application you can do something like
