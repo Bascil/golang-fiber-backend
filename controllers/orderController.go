@@ -16,7 +16,7 @@ func GetOrders(c *fiber.Ctx) error {
 }
 
 func Export(c *fiber.Ctx) error {
-	filePath := "./csv/orders.csv"
+	filePath := "./data/orders.csv"
 
 	if err := CreateFile(filePath);err != nil {
 		return err
