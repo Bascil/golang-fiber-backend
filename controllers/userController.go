@@ -3,36 +3,28 @@ package controllers
 import (
 	"../database"
 	"../models"
+	"../middlewares"
 	"github.com/gofiber/fiber"
 	"strconv"
-	"math"
 )
 
 func GetUsers(c *fiber.Ctx) error {
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
+
 	page, _ := strconv.Atoi(c.Query("page","1"))
-	limit := 5
-	offset := (page - 1) * limit; //if page is 2, start from the 5th record
 	
-	var total int64
-
-	var users []models.User //slice, similar to an array
-	database.DB.Preload("Role").Offset(offset).Limit(limit).Find(&users)
-
-	database.DB.Model(&models.User{}).Count(&total)
-
-	return c.JSON(fiber.Map{
-		"data": users,
-		"meta": fiber.Map{
-			"total":total,
-			"page": page,
-			"last_page": math.Ceil(float64(int(total) / limit)),
-		},
-	})
-
-	return c.JSON(users)
+	return c.JSON(models.Paginate(database.DB, &models.User{}, page))
 }
 
 func GetUser(c *fiber.Ctx) error {
+
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id")) //id and error
 	
 	user := models.User{
@@ -45,6 +37,10 @@ func GetUser(c *fiber.Ctx) error {
 }
 
 func CreateUser(c *fiber.Ctx) error {
+	// if err := middlewares.IsAuthorized(c, "users"); err != nil {
+	// 	return err
+	// }
+
 	var user models.User 
 
 	if err := c.BodyParser(&user); err != nil {
@@ -59,6 +55,10 @@ func CreateUser(c *fiber.Ctx) error {
 }
 
 func UpdateUser(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id")) //id and error
 	
 	user := models.User{
@@ -75,6 +75,10 @@ func UpdateUser(c *fiber.Ctx) error {
 }
 
 func DeleteUser(c *fiber.Ctx) error {
+	if err := middlewares.IsAuthorized(c, "users"); err != nil {
+		return err
+	}
+
 	id, _ := strconv.Atoi(c.Params("id")) //id and error
 	
 	user := models.User{

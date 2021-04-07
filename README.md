@@ -1,10 +1,10 @@
 # golang-fiber-react-project-with-roles-and-permissions
 
-A Go (golang) backend application developed on Fiber Framework with React Frontend
+A Go (golang) backend application developed on Fiber Framework
 
 > This project is intended for developers who wish to expand their skills in using go to develop enterprise applications. This application uses MySQL database
 
-It can be used as a fully functional ERP with a working authentication system as well as user management with roles and permission
+It can be used as a fully functional backend with a working authentication system as well as user management with roles and permission
 
 ## Installation
 
@@ -65,7 +65,7 @@ go get golang.org/x/crypto/bcrypt
 go get gorm.io/gorm
 go get gorm.io/driver/mysql
 go get github.com/dgrijalva/jwt-go
-
+go get encoding/csv
 ```
 
 ## Watching File Changes
