@@ -1,4 +1,4 @@
-# golang-fiber-react-project-with-roles-and-permissions
+# golang-fiber-backend-with-roles-and-permissions
 
 A Go (golang) backend application developed on Fiber Framework
 
