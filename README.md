@@ -86,7 +86,7 @@ settings:
     force: false
     interval: 0s
 schema:
-- name: go-demos
+- name: backend
   path: .
   commands:
     run:
