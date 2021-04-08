@@ -25,12 +25,14 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
+	roleId := 2;
 	// password,_ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
 
 	user := models.User{
 		Firstname:data["first_name"],
 		Lastname:data["last_name"],
 		Email:data["email"],
+		RoleId: uint(roleId),
 		// Password:password,
 	}
 
