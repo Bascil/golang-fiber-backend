@@ -7,7 +7,7 @@ import (
 )
 
 func Paginate(db *gorm.DB, entity Entity, page int) fiber.Map {
-	limit := 15
+	limit := 10
 	offset := (page - 1) * limit; //if page is 2, start from the 15th record
 
 	data := entity.Take(db, limit, offset)

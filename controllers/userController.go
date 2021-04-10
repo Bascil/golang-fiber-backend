@@ -37,22 +37,29 @@ func GetUser(c *fiber.Ctx) error {
 }
 
 func CreateUser(c *fiber.Ctx) error {
-	// if err := middlewares.IsAuthorized(c, "users"); err != nil {
-	// 	return err
-	// }
+	var data map[string]string //array with key string and value string
 
-	var user models.User 
+	err := c.BodyParser(&data)
 
-	if err := c.BodyParser(&user); err != nil {
+	if err != nil {
 		return err
 	}
 
-	user.SetPassword("1234")
+	roleId, _ := strconv.Atoi(data["role_id"]) //id and error
 
-	database.DB.Create(&user); // create user by reference
+	user := models.User{
+		Firstname:data["first_name"],
+		Lastname:data["last_name"],
+		Email:data["email"],
+		RoleId: uint(roleId),
+	}
 
+	user.SetPassword("1234");
+
+	database.DB.Create(&user); 
 	return c.JSON(user)
 }
+
 
 func UpdateUser(c *fiber.Ctx) error {
 	if err := middlewares.IsAuthorized(c, "users"); err != nil {

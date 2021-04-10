@@ -27,10 +27,21 @@ func GetProduct(c *fiber.Ctx) error {
 }
 
 func CreateProduct(c *fiber.Ctx) error {
-	var product models.Product 
+	var data map[string]string //array with key string and value string
 
-	if err := c.BodyParser(&product); err != nil {
+	err := c.BodyParser(&data)
+
+	if err != nil {
 		return err
+	}
+
+	price, _ := strconv.Atoi(data["price"]) //id and error
+
+	product := models.Product{
+		Title:data["title"],
+		Description:data["description"],
+		Image:data["image"],
+		Price: float64(price),
 	}
 
 	database.DB.Create(&product);
