@@ -1,4 +1,4 @@
-# golang-fiber-backend-with-roles-and-permissions
+# golang-fiber-backend
 
 A Go (golang) backend application developed on Fiber Framework
 
